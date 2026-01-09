@@ -29,23 +29,20 @@ io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
   socket.on("find_match", async (data) => {
+    console.log("find_match received:", data);
     try {
       const match = await findMatch({
         ...data,
         socketId: socket.id
       });
 
-      if (match) {
-        // Notify both users
-        socket.emit("match_found", { partnerId: match.userId });
-        io.to(match.socketId).emit("match_found", {
-          partnerId: data.userId
-        });
-      } else {
-        socket.emit("waiting", {
-          message: "Waiting for another player..."
-        });
-      }
+    if (match) {
+      socket.emit("match_found", { partnerId: match.userId });
+      io.to(match.socketId).emit("match_found", {
+        partnerId: data.userId
+      });
+    }
+
     } catch (error) {
       console.error("Matchmaking error:", error);
     }

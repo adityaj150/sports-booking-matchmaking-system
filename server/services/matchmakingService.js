@@ -10,8 +10,8 @@ const findMatch = async (currentUser) => {
     socketId
   } = currentUser;
 
-  // Try to find another matching user
-  const match = await MatchmakingPool.findOne({
+  // 🔑 ATOMIC OPERATION
+  const match = await MatchmakingPool.findOneAndDelete({
     sportType,
     skillLevel,
     preferredDate,
@@ -20,15 +20,10 @@ const findMatch = async (currentUser) => {
   });
 
   if (match) {
-    // Remove both users from pool
-    await MatchmakingPool.deleteMany({
-      _id: { $in: [match._id] }
-    });
-
     return match;
   }
 
-  // No match found → add current user to pool
+  // No match → add user to pool
   await MatchmakingPool.create({
     userId,
     sportType,
