@@ -1,5 +1,6 @@
 const MatchmakingPool = require("../models/MatchmakingPool");
 
+
 const findMatch = async (currentUser) => {
   const {
     userId,
@@ -10,20 +11,24 @@ const findMatch = async (currentUser) => {
     socketId
   } = currentUser;
 
-  // 🔑 ATOMIC OPERATION
+  // ✅ CLEAN OLD ENTRIES
+  await MatchmakingPool.deleteMany({
+    $or: [{ userId }, { socketId }]
+  });
+
   const match = await MatchmakingPool.findOneAndDelete({
     sportType,
     skillLevel,
     preferredDate,
     preferredTimeSlot,
-    userId: { $ne: userId }
+    userId: { $ne: userId },
+    socketId: { $ne: socketId } // ✅ extra safety
   });
 
   if (match) {
     return match;
   }
 
-  // No match → add user to pool
   await MatchmakingPool.create({
     userId,
     sportType,

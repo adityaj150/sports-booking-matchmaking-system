@@ -3,7 +3,15 @@ import socket from "../socket/socket";
 
 const Matchmaking = () => {
   const [status, setStatus] = useState("");
-  const userIdRef = useRef(crypto.randomUUID());
+  const userIdRef = useRef(
+  localStorage.getItem("userId") ||
+  (() => {
+    const id = "user-" + Math.random().toString(36).slice(2, 8);
+    localStorage.setItem("userId", id);
+    return id;
+  })()
+);
+
 
   const handleFindMatch = () => {
     setStatus("Waiting for another player...");

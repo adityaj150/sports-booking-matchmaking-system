@@ -3,9 +3,8 @@ const mongoose = require("mongoose");
 const matchmakingPoolSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true
+    type: String,
+    required: true
     },
     sportType: { type: String, required: true },
     skillLevel: { type: String, required: true },

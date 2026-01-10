@@ -21,32 +21,53 @@ connectDB();
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
+
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-  socket.on("find_match", async (data) => {
-    console.log("find_match received:", data);
-    try {
-      const match = await findMatch({
-        ...data,
-        socketId: socket.id
-      });
+//   socket.on("find_match", async (data) => {
+//     console.log("find_match received:", data);
+//     try {
+//       const match = await findMatch({
+//         ...data,
+//         socketId: socket.id
+//       });
 
-    if (match) {
-      socket.emit("match_found", { partnerId: match.userId });
-      io.to(match.socketId).emit("match_found", {
-        partnerId: data.userId
-      });
-    }
+//     if (match) {
+//       socket.emit("match_found", { partnerId: match.userId });
+//       io.to(match.socketId).emit("match_found", {
+//         partnerId: data.userId
+//       });
+//     }
 
-    } catch (error) {
-      console.error("Matchmaking error:", error);
-    }
+//     } catch (error) {
+//       console.error("Matchmaking error:", error);
+//     }
+//   });
+socket.on("find_match", async (data) => {
+  console.log("📥 find_match from:", socket.id, data.userId);
+
+  const match = await findMatch({
+    ...data,
+    socketId: socket.id
   });
+
+  if (match) {
+    socket.emit("match_found");
+    io.to(match.socketId).emit("match_found");
+  } 
+  else {
+    socket.emit("waiting", {
+        message: "Waiting for another player..."
+    });
+  }
+});
+
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
@@ -54,7 +75,7 @@ io.on("connection", (socket) => {
 });
 
 
-// Start server
-server.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+server.listen(process.env.PORT || 5000, () => {
+  console.log(`Server running on port ${process.env.PORT || 5000}`);
 });
+

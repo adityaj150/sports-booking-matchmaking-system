@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5000", {
-  transports: ["websocket"]
+  withCredentials: true
 });
 
 socket.on("connect", () => {
@@ -9,7 +9,7 @@ socket.on("connect", () => {
 });
 
 socket.on("connect_error", (err) => {
-  console.error("❌ Socket connection error:", err.message);
+  console.error("❌ Socket connect error:", err.message);
 });
 
 export default socket;
