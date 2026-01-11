@@ -58,7 +58,7 @@ const Matchmaking = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div style={{ padding: "40px", maxWidth: "700px", margin: "auto" }}>
       <h2>🤝 Find Players & Book Together</h2>
 
       {!booking && (
@@ -109,20 +109,22 @@ const Matchmaking = () => {
           </div>
 
           <button
-            style={styles.findBtn}
+            className="primary-btn"
             onClick={handleFindMatch}
             disabled={searching}
           >
             {searching ? "Searching..." : "Find Match"}
           </button>
 
-          <p style={styles.status}>{status}</p>
+          <p className={`status ${booking ? "success" : "waiting"}`}>
+            {status}
+          </p>
         </>
       )}
 
       {/* MATCH FOUND CARD */}
       {booking && (
-        <div style={styles.card}>
+        <div className="card" style={{ marginTop: "30px" }}>
           <h3>✅ Booking Confirmed</h3>
           <p><strong>Sport:</strong> {booking.sportType}</p>
           <p><strong>Date:</strong> {booking.date}</p>
