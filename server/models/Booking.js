@@ -3,14 +3,12 @@ const mongoose = require("mongoose");
 const bookingSchema = new mongoose.Schema(
   {
     courtId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Court",
+      type: String,
       required: true
     },
     players: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        type: String
       }
     ],
     bookingType: {

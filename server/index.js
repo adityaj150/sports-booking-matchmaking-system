@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { findMatch } = require("./services/matchmakingService");
-
+const { createMatchmakingBooking } = require("./services/bookingservice");
+const bookingRoutes = require("./routes/bookingRoutes");
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
@@ -13,7 +14,7 @@ const server = http.createServer(app);
 // Middleware
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/bookings", bookingRoutes);
 // Connect Database
 connectDB();
 
@@ -58,14 +59,29 @@ socket.on("find_match", async (data) => {
   });
 
   if (match) {
-    socket.emit("match_found");
-    io.to(match.socketId).emit("match_found");
+  const booking = await createMatchmakingBooking({
+    userA: data.userId,
+    userB: match.userId,
+    sportType: data.sportType,
+    date: data.preferredDate,
+    timeSlot: data.preferredTimeSlot
+  });
+
+  socket.emit("match_found", {
+    booking
+  });
+
+  io.to(match.socketId).emit("match_found", {
+    booking
+  });
+
   } 
   else {
-    socket.emit("waiting", {
-        message: "Waiting for another player..."
-    });
+  socket.emit("waiting", {
+    message: "Waiting for another player..."
+  });
   }
+
 });
 
 
