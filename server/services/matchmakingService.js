@@ -11,23 +11,22 @@ const findMatch = async (currentUser) => {
     socketId
   } = currentUser;
 
-  // ✅ CLEAN OLD ENTRIES
-  await MatchmakingPool.deleteMany({
-    $or: [{ userId }, { socketId }]
-  });
+  console.log("🔎 Searching match for:", userId);
 
   const match = await MatchmakingPool.findOneAndDelete({
     sportType,
     skillLevel,
     preferredDate,
     preferredTimeSlot,
-    userId: { $ne: userId },
-    socketId: { $ne: socketId } // ✅ extra safety
+    userId: { $ne: userId }
   });
 
   if (match) {
+    console.log("✅ Match found:", match.userId);
     return match;
   }
+
+  console.log("➕ No match, adding to queue:", userId);
 
   await MatchmakingPool.create({
     userId,
