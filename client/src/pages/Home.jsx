@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
+
 
 const Home = () => {
   const navigate = useNavigate();
-  const user = auth.currentUser;
-
+  const { user } = useAuth();
   const handleLogout = async () => {
     await signOut(auth);
     navigate("/login");
@@ -111,3 +112,6 @@ const styles = {
 };
 
 export default Home;
+
+//Npx nodemon index.js
+//Npm run dev

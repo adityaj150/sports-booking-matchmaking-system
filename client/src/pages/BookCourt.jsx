@@ -1,6 +1,7 @@
 import { useState } from "react";
-const userId =
-  sessionStorage.getItem("userId") || "test-user-booking";
+import { useAuth } from "../context/AuthContext";
+
+
 const dummyCourts = [
   {
     id: 1,
@@ -29,8 +30,13 @@ const BookCourt = () => {
   const [selectedCourt, setSelectedCourt] = useState(null);
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState("");
+  const { user } = useAuth();
 
   const handleBooking = async () => {
+    if (!user) {
+      alert("Please login again");
+      return;
+    }
     if (!selectedCourt || !date || !slot) {
       alert("Please select court, date and time slot");
       return;
@@ -44,7 +50,7 @@ const BookCourt = () => {
         },
         body: JSON.stringify({
           courtId: selectedCourt.id,
-          userId,
+          userId: user.uid,
           sportType: selectedCourt.sportType,
           date,
           timeSlot: slot

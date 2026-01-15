@@ -8,7 +8,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
-
+const courtRoutes = require("./routes/courtRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -18,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/courts", courtRoutes);
 // Connect Database
 connectDB();
 

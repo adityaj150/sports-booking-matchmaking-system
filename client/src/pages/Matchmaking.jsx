@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import socket from "../socket/socket";
+import { useAuth } from "../context/AuthContext";
+
 
 const Matchmaking = () => {
   const [sportType, setSportType] = useState("Badminton");
@@ -9,6 +11,7 @@ const Matchmaking = () => {
   const [status, setStatus] = useState("");
   const [searching, setSearching] = useState(false);
   const [booking, setBooking] = useState(null);
+  const { user } = useAuth();
 
   const userIdRef = useRef(
     localStorage.getItem("userId") ||
@@ -20,6 +23,10 @@ const Matchmaking = () => {
   );
 
   const handleFindMatch = () => {
+    if (!user) {
+      alert("Please login again");
+      return;
+    }
     if (!date || !timeSlot) {
       alert("Please select date and time");
       return;
@@ -29,7 +36,7 @@ const Matchmaking = () => {
     setStatus("Searching for a player...");
 
     socket.emit("find_match", {
-      userId: userIdRef.current,
+      userId: user.uid, // Firebase UID for authenticated users
       sportType,
       skillLevel,
       preferredDate: date,

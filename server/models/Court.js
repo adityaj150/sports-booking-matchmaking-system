@@ -18,8 +18,14 @@ const courtSchema = new mongoose.Schema(
     images: [String],
     availableSlots: [
       {
-        date: String,
-        slots: [String]
+        date: { type: String, required: true },
+        slots: [
+          {
+            startTime: { type: String, required: true },
+            endTime: { type: String, required: true },
+            isBooked: { type: Boolean, default: false }
+          }
+        ]
       }
     ]
   },

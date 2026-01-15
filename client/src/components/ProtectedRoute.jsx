@@ -1,8 +1,12 @@
 import { Navigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const user = auth.currentUser;
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <p style={{ textAlign: "center" }}>Loading...</p>;
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;
