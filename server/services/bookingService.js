@@ -1,9 +1,9 @@
-const Booking = require("../models/booking");
+import Booking from "../models/Booking.js";
 
 // TEMP dummy court
 const DUMMY_COURT_ID = "dummy-court-1";
 
-const createMatchmakingBooking = async ({
+export const createMatchmakingBooking = async ({
   userA,
   userB,
   sportType,
@@ -21,5 +21,3 @@ const createMatchmakingBooking = async ({
 
   return booking;
 };
-
-module.exports = { createMatchmakingBooking };

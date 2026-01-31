@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Court = require("../models/Court");
-const { generateTimeSlots } = require("../utils/slotGenerator");
+import Court from "../models/Court.js";
+import { generateTimeSlots } from "../utils/slotGenerator.js";
 
 router.post("/", async (req, res) => {
   try {
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
         message: "availability must be an object with startDate, endDate, startTime, endTime"
       });
     }
-    
+
     const {
       startDate,
       endDate,
@@ -68,4 +68,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

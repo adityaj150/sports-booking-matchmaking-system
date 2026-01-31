@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   firebaseUid: {
@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
   },
   xp: { type: Number, default: 0 },
   badges: [String],
+  skillRating: { type: Number, default: 1000 },
+  reliabilityScore: { type: Number, default: 100 },
   stats: {
     matchesPlayed: { type: Number, default: 0 },
     wins: { type: Number, default: 0 },
@@ -23,4 +25,4 @@ const userSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

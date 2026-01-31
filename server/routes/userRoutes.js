@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const User = require("../models/User");
+import User from "../models/User.js";
 
 // Create or fetch user from Firebase UID
 router.post("/sync", async (req, res) => {
@@ -27,4 +27,4 @@ router.post("/sync", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

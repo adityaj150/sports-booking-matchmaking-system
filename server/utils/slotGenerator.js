@@ -1,4 +1,4 @@
-const generateTimeSlots = (
+export const generateTimeSlots = (
   startTime = "06:00",
   endTime = "22:00",
   slotDurationMinutes = 60
@@ -33,5 +33,3 @@ const generateTimeSlots = (
 
   return slots;
 };
-
-module.exports = { generateTimeSlots };

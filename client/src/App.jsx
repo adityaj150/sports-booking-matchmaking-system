@@ -5,20 +5,20 @@ import BookCourt from "./pages/BookCourt";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Layout from "./components/Layout";
 
 function App() {
   return (
     <Routes>
-      {/* <Route path="/" element={<Home />} />
-      <Route path="/matchmaking" element={<Matchmaking />} />
-      <Route path="/book-court" element={<BookCourt />} /> */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Layout><Login /></Layout>} />
+      <Route path="/signup" element={<Layout><Signup /></Layout>} />
       <Route
         path="/"
         element={
           <ProtectedRoute>
-            <Home />
+            <Layout>
+              <Home />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -26,7 +26,9 @@ function App() {
         path="/matchmaking"
         element={
           <ProtectedRoute>
-            <Matchmaking />
+            <Layout>
+              <Matchmaking />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -34,7 +36,9 @@ function App() {
         path="/book-court"
         element={
           <ProtectedRoute>
-            <BookCourt />
+            <Layout>
+              <BookCourt />
+            </Layout>
           </ProtectedRoute>
         }
       />
